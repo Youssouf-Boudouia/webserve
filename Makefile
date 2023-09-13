@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/12 12:46:16 by yboudoui          #+#    #+#              #
-#    Updated: 2023/09/12 19:41:06 by yboudoui         ###   ########.fr        #
+#    Updated: 2023/09/13 15:14:07 by yboudoui         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,12 +20,14 @@ SRCS				=	main.cpp\
 						srcs/SocketBind.cpp \
 						srcs/SocketConnection.cpp
 
-LIBKQEUE			=	./dependencies/libkqueue/build
+PATH_PACKAGE		=	./dependencies/package
+PATH_BUILD			=	./dependencies/build
+PATH_LIB			=	./dependencies/lib
 
 INCS				=	./incs \
-						$(LIBKQEUE)/include
+						$(PATH_LIB)/libkqueue/include
 
-LIBS				=	$(LIBKQEUE)/lib/libkqueue.a
+LIBS				=	$(PATH_LIB)/libkqueue/lib/libkqueue.a
 
 OBJS				=	$(SRCS:.cpp=.o)
 
@@ -51,8 +53,23 @@ clean:
 
 fclean:		clean
 			$(RM) $(NAME)
+			$(RM)r $(PATH_BUILD)
+			$(RM)r $(PATH_LIB)
 
 re:			fclean
 			make all
 
-.PHONY:		all clean fclean re
+install_libkqueue:
+			if [ ! -d "$(PATH_LIB)/libkqueue" ]; then mkdir $(PATH_LIB)/libkqueue; fi
+			if [ ! -d "$(PATH_BUILD)/libkqueue" ]; then mkdir $(PATH_BUILD)/libkqueue; fi
+			cd $(PATH_BUILD)/libkqueue; \
+			cmake -G "Unix Makefiles" \
+				-DCMAKE_INSTALL_PREFIX=../../lib/libkqueue \
+				-DCMAKE_INSTALL_LIBDIR=lib \
+				../../package/libkqueue; \
+			make install; 
+
+install:
+	make install_libkqueue
+
+.PHONY:		all clean fclean re install
