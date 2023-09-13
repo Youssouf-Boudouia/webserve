@@ -1,1 +1,3 @@
-# webserve
+# Installation
+	make install
+	make
