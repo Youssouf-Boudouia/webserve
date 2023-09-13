@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/12 12:46:16 by yboudoui          #+#    #+#              #
-#    Updated: 2023/09/13 15:14:07 by yboudoui         ###   ########.fr        #
+#    Updated: 2023/09/13 16:58:36 by yboudoui         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ OBJS				=	$(SRCS:.cpp=.o)
 
 #-----------------------------------------------------------------------------#
 
-CXX					=	c++
+CXX					=	clang++
 
 CXXFLAGS			=	-Wall -Wextra -Werror -std=c++98
 
@@ -60,8 +60,8 @@ re:			fclean
 			make all
 
 install_libkqueue:
-			if [ ! -d "$(PATH_LIB)/libkqueue" ]; then mkdir $(PATH_LIB)/libkqueue; fi
-			if [ ! -d "$(PATH_BUILD)/libkqueue" ]; then mkdir $(PATH_BUILD)/libkqueue; fi
+			if [ ! -d "$(PATH_LIB)/libkqueue" ]; then mkdir -p $(PATH_LIB)/libkqueue; fi
+			if [ ! -d "$(PATH_BUILD)/libkqueue" ]; then mkdir -p $(PATH_BUILD)/libkqueue; fi
 			cd $(PATH_BUILD)/libkqueue; \
 			cmake -G "Unix Makefiles" \
 				-DCMAKE_INSTALL_PREFIX=../../lib/libkqueue \

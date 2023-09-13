@@ -6,7 +6,7 @@
 /*   By: yboudoui <yboudoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:07:28 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/09/12 17:24:16 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:57:07 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 # define QUEUE_HPP
 
 extern "C" {
-# include <kqueue/sys/event.h>
+# include "kqueue/sys/event.h"
 }
+
 # include <unistd.h>
 
 # include <map>

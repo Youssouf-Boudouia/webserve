@@ -6,12 +6,13 @@
 /*   By: yboudoui <yboudoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 16:15:58 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/09/12 20:04:29 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:52:06 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "SocketConnection.hpp"
 #include <iostream>
+
 SocketConnection::SocketConnection(IQueue &queue, int fd_socketBind) : _queue(queue)
 {
 	_addr = (struct sockaddr){};
