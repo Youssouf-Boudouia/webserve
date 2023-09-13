@@ -1,0 +1,3 @@
+[submodule "dependencies/package/libkqueue"]
+	path = dependencies/package/libkqueue
+	url = git@github.com:mheily/libkqueue.git
