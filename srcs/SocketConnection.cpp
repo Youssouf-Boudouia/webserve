@@ -6,12 +6,13 @@
 /*   By: yboudoui <yboudoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 16:15:58 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/09/13 16:52:06 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:55:13 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "SocketConnection.hpp"
 #include <iostream>
+#include <string.h>
 
 SocketConnection::SocketConnection(IQueue &queue, int fd_socketBind) : _queue(queue)
 {
@@ -32,7 +33,30 @@ SocketConnection::~SocketConnection()
 
 void	SocketConnection::listen(void)
 {
-	std::cout << "Hello" <<std::endl;
-	sleep(1);
+	std::string			request("");
+	ssize_t				bytes_read;
+	const unsigned int	buff_len = 512;
+	char				buff[buff_len];
+
+	do {
+		bzero(buff, buff_len);
+		bytes_read = recv(_fd, buff, buff_len, 0);
+		request.append(buff, buff_len);
+	} while (bytes_read > 0);
+
+	std::cout << "_______________________________________________" << std::endl;
+	std::cout << request <<std::endl;
+
+_queue.unsubscribe(_fd);
+return;
+	const char *response = "HTTP/1.1 200 OK\nContent-Length: 74\n\n<style>h1 { color: blue; font-size: 32px; }</style><h1>Hello, world !</h1>";
+
+	int len = strlen(response);
+	int bytes_send = 0;
+	do {
+		bytes_send = send(_fd, &response[bytes_send], len - bytes_send, 0);
+	} while (bytes_send > 0);
+
+	_queue.unsubscribe(_fd);
 	//Request	new_request(/*..?..*/);
 }
