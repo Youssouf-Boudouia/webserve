@@ -1,1 +1,4 @@
 *.o
+./objs/
+./dependencies/lib/
+./dependencies/build/
