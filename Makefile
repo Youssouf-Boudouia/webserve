@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: obouhlel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/12 12:46:16 by yboudoui          #+#    #+#              #
-#    Updated: 2023/09/13 16:58:36 by yboudoui         ###   ########.fr        #
+#    Updated: 2023/09/14 18:06:38 by obouhlel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,47 +29,53 @@ INCS				=	./incs \
 
 LIBS				=	$(PATH_LIB)/libkqueue/lib/libkqueue.a
 
-OBJS				=	$(SRCS:.cpp=.o)
+OBJS_DIR			=	./objs
+
+OBJS				:=	$(SRCS:%.cpp=$(OBJS_DIR)/%.o)
+
+DEPS				:=	$(OBJS:%.o=%.d)
 
 #-----------------------------------------------------------------------------#
 
 CXX					=	clang++
 
-CXXFLAGS			=	-Wall -Wextra -Werror -std=c++98
+CXXFLAGS			=	-Wall -Wextra -Werror -MMD -std=c++98
 
 RM					=	rm -f
 
-
-.cpp.o:
-			$(CXX) $(CXXFLAGS) $(addprefix -I, $(INCS)) -c $< -o $(<:.cpp=.o)
+$(OBJS_DIR)/%.o: %.cpp
+	mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(addprefix -I, $(INCS)) -c $< -o $@
 
 $(NAME):	$(OBJS)
-			$(CXX) $(CXXFLAGS) $(addprefix -I, $(INCS)) $(OBJS) -o $(NAME) $(LIBS)
+	$(CXX) $(CXXFLAGS) $(addprefix -I, $(INCS)) $(OBJS) -o $(NAME) $(LIBS)
 
 all:		$(NAME)
 
 clean:
-			$(RM) $(OBJS)
+	$(RM) -r $(OBJS_DIR)
 
 fclean:		clean
-			$(RM) $(NAME)
-			$(RM)r $(PATH_BUILD)
-			$(RM)r $(PATH_LIB)
+	$(RM) $(NAME)
+	$(RM) -r $(PATH_BUILD)
+	$(RM) -r $(PATH_LIB)
 
 re:			fclean
-			make all
+	make all
 
 install_libkqueue:
-			if [ ! -d "$(PATH_LIB)/libkqueue" ]; then mkdir -p $(PATH_LIB)/libkqueue; fi
-			if [ ! -d "$(PATH_BUILD)/libkqueue" ]; then mkdir -p $(PATH_BUILD)/libkqueue; fi
-			cd $(PATH_BUILD)/libkqueue; \
-			cmake -G "Unix Makefiles" \
-				-DCMAKE_INSTALL_PREFIX=../../lib/libkqueue \
-				-DCMAKE_INSTALL_LIBDIR=lib \
-				../../package/libkqueue; \
-			make install; 
+	if [ ! -d "$(PATH_LIB)/libkqueue" ]; then mkdir -p $(PATH_LIB)/libkqueue; fi
+	if [ ! -d "$(PATH_BUILD)/libkqueue" ]; then mkdir -p $(PATH_BUILD)/libkqueue; fi
+	cd $(PATH_BUILD)/libkqueue; \
+	cmake -G "Unix Makefiles" \
+		-DCMAKE_INSTALL_PREFIX=../../lib/libkqueue \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		../../package/libkqueue; \
+	make install; 
 
 install:
 	make install_libkqueue
 
 .PHONY:		all clean fclean re install
+
+-include $(DEPS)
