@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yboudoui <yboudoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/10 16:04:51 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/09/17 19:54:29 by yboudoui         ###   ########.fr       */
+/*   Created: 2023/09/17 14:10:23 by yboudoui          #+#    #+#             */
+/*   Updated: 2023/09/17 19:49:44 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include "SocketBind.hpp"
+#ifndef REQUEST_HPP
+# define REQUEST_HPP
 
-int main(int argc, char *argv[])
-{
-	(void)argc;
-	(void)argv;
+# include <sys/socket.h>
+# include <string>
+# include <cstring>
 
-	int	port = 8082;
+class Request {
+	private:
+		std::string	_request;
 
-	Queue	queue = Queue();
+	public:
+		bool	ok;
+		Request(void);
+		~Request(void);
 
-	SocketBind	sock(queue, port, 5);
-
-	std::cout << "localhost:" << port << std::endl;
-	while (42)
-		queue.event_loop();
-	return (0);
-}
+		void	recv(int _fd);
+};
+#endif

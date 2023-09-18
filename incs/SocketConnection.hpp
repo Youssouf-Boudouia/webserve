@@ -6,7 +6,7 @@
 /*   By: yboudoui <yboudoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 16:16:24 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/09/12 18:55:05 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/09/17 15:22:36 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define SOCKETREQUEST_HPP
 
 # include "Queue.hpp"
-# include <sys/socket.h>
+# include "Request.hpp"
 # include <netinet/in.h>
 
 class SocketConnection : public IQueueEventListener {
@@ -23,11 +23,13 @@ class SocketConnection : public IQueueEventListener {
 		struct sockaddr		_addr;
 		socklen_t			_addr_len;
 		IQueue				&_queue;
+		Request				_request;
 
 	public:
 		SocketConnection(IQueue &queue, int fd_socketBind);
 		~SocketConnection();
-		void	listen(void);
+		void	read(void);
+		void	write(void);
 };
 
 #endif

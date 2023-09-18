@@ -6,7 +6,7 @@
 /*   By: yboudoui <yboudoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:07:28 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/09/13 16:57:07 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/09/17 19:52:43 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@ extern "C" {
 
 # define MAX_EVENTS 32
 
+
 class IQueueEventListener {
 	public:
-		virtual void	listen(void)	= 0;
+		virtual void	read(void)	= 0;
+		virtual void	write(void)	= 0;
 };
 
 class IQueue {
@@ -34,8 +36,6 @@ class IQueue {
 		virtual void	subscribe(int fd, IQueueEventListener &event)	= 0;
 		virtual void	unsubscribe(int fd)	= 0;
 };
-
-typedef	void	(*t_event_handler)(const IQueue&, const struct kevent&);
 
 class Queue : public IQueue {
 	private:
@@ -53,6 +53,6 @@ class Queue : public IQueue {
 
 		void	subscribe(int fd, IQueueEventListener &listener);
 		void	unsubscribe(int fd);
-		void	event_loop(t_event_handler handler);
+		void	event_loop(void);
 };
 #endif

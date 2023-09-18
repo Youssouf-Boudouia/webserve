@@ -6,12 +6,13 @@
 /*   By: yboudoui <yboudoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:05:36 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/09/12 19:54:26 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/09/17 19:52:52 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Queue.hpp"
 
+#include <iostream>
 Queue::Queue() : _nevents(MAX_EVENTS) {
 	_kq_fd = kqueue();
 	if (_kq_fd < 0)
@@ -30,9 +31,17 @@ void	Queue::subscribe(int fd, IQueueEventListener &listener) {
 	struct kevent evSet = {
 		.ident	= fd,
 		.filter	= EVFILT_READ,
-		.flags	= EV_ADD
+		.flags	= EV_ADD | EV_CLEAR
 	};
 	kevent(_kq_fd, &evSet, 1, NULL, 0, NULL);
+
+	struct kevent evSet2 = {
+		.ident	= fd,
+		.filter	= EVFILT_WRITE,
+		.flags	= EV_ADD | EV_CLEAR
+	};
+	kevent(_kq_fd, &evSet2, 1, NULL, 0, NULL);
+
 	_m.insert(std::pair<int, IQueueEventListener&>(fd, listener));
 }
 
@@ -46,17 +55,33 @@ void	Queue::unsubscribe(int fd) {
 	_m.erase(fd);
 }
 
-void	Queue::event_loop(t_event_handler handler)
+void	Queue::event_loop(void)
 {
 	int	num_events;
 	t_listener_map::iterator	listener;
 
 	num_events = kevent(_kq_fd, NULL, 0, _events_list, _nevents, NULL);
-	for (int i = 0; i < num_events; i++) {
+	for (int i = 0; i < num_events; i++)
+	{
 		listener = _m.find(_events_list[i].ident);
-		if (listener != _m.end())
-			listener->second.listen();
-		handler(*this, _events_list[i]);
+		if (listener == _m.end())
+			continue ;
+		if (_events_list[i].flags & EV_EOF)
+		{
+			std::cout << "EOF" << std::endl;
+//			unsubscribe(_events_list[i].ident);
+//			continue ;
+		}
+		if (_events_list[i].filter & EVFILT_READ)
+		{
+			std::cout << "READ" << std::endl;
+			listener->second.read();
+		}
+		if (_events_list[i].filter & EVFILT_WRITE)
+		{
+			std::cout << "WRITE" << std::endl;
+			listener->second.write();
+		}
 	}
 }
 
