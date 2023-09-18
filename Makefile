@@ -6,7 +6,7 @@
 #    By: obouhlel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/12 12:46:16 by yboudoui          #+#    #+#              #
-#    Updated: 2023/09/14 18:06:38 by obouhlel         ###   ########.fr        #
+#    Updated: 2023/09/18 13:45:26 by obouhlel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,13 @@ NAME				=	webserve
 
 #-----------------------------------------------------------------------------#
 
-SRCS				=	main.cpp\
+SRCS				=	main.cpp \
 						srcs/MessageTransporter.cpp \
 						srcs/Queue.cpp \
 						srcs/SocketBind.cpp \
-						srcs/SocketConnection.cpp
+						srcs/SocketConnection.cpp \
+						srcs/Request.cpp \
+						srcs/Response.cpp \
 
 PATH_PACKAGE		=	./dependencies/package
 PATH_BUILD			=	./dependencies/build
