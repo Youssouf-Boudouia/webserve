@@ -40,15 +40,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Webserv</title>
+	<title>Upload files</title>
 </head>
+<h1>Upload files</h1>
+<p>Upload files to the server</p>
 <body>
-	<h1>Hello World !</h1>
-	<p>Testing the page for Webserv</p>
-	<br />
-	<a href="/upload_image.html"><button>Upload image</button></a>
-	<br />
-	<a href="/upload_files.html"><button>Upload files</button></a>
-	<a href="/imgs/logo.webp"><img src="/imgs/logo.webp" alt="Logo" width="200" height="200" /></a>
+	<center>
+		<form method="post" enctype="multipart/form-data">
+			<input type="file" name="fileToUpload" id="fileToUpload1">
+			<input type="file" name="fileToUpload" id="fileToUpload2">
+			<input type="file" name="fileToUpload" id="fileToUpload3">
+			<input type="submit" value="Upload files" name="submit">
+		</form>
+	</center>
 </body>
 </html>

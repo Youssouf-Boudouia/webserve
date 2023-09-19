@@ -6,7 +6,7 @@
 /*   By: obouhlel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 11:06:06 by obouhlel          #+#    #+#             */
-/*   Updated: 2023/09/18 14:31:53 by obouhlel         ###   ########.fr       */
+/*   Updated: 2023/09/19 12:55:19 by obouhlel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ void	Request::readRequest(void)
 		buffer[ret] = '\0';
 		this->_request += buffer;
 	}
-	else
-		std::cout << "All data receved" << std::endl;
 	this->parseRequest();
 }
 
@@ -97,6 +95,11 @@ void	Request::parseRequest(void)
 
 void	Request::displayRequest(void)
 {
-	std::cout << YELLOW << "Request from fd n°" << this->_fd << RESET << std::endl;
-	std::cout << YELLOW << this->_request << RESET << std::endl;
+	if (this->_request != "")
+	{
+		std::cout << "_______________________________________________" << std::endl;
+		std::cout << YELLOW << "Request from fd n°" << this->_fd << RESET << std::endl;
+		std::cout << YELLOW << this->_request << RESET << std::endl;
+		std::cout << "_______________________________________________" << std::endl;
+	}
 }

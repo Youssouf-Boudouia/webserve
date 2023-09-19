@@ -6,7 +6,7 @@
 /*   By: obouhlel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 16:15:58 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/09/18 14:24:23 by obouhlel         ###   ########.fr       */
+/*   Updated: 2023/09/19 11:48:11 by obouhlel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,8 @@ void	SocketConnection::listen(void)
 	Request		new_request(_fd);
 	Response	new_response(new_request);
 
-	std::cout << "_______________________________________________" << std::endl;
 	new_request.readRequest();
 	new_request.displayRequest();
-	std::cout << "_______________________________________________" << std::endl;
 	new_response.sendResponse();
 	new_response.displayResponse();
-	std::cout << "_______________________________________________" << std::endl;
 }

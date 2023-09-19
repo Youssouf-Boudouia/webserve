@@ -6,7 +6,7 @@
 #    By: obouhlel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/12 12:46:16 by yboudoui          #+#    #+#              #
-#    Updated: 2023/09/18 13:45:26 by obouhlel         ###   ########.fr        #
+#    Updated: 2023/09/19 13:33:08 by obouhlel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ CXXFLAGS			=	-Wall -Wextra -Werror -MMD -std=c++98
 RM					=	rm -f
 
 $(OBJS_DIR)/%.o: %.cpp
-	mkdir -p $(@D)
+	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(addprefix -I, $(INCS)) -c $< -o $@
 
 $(NAME):	$(OBJS)

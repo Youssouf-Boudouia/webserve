@@ -6,7 +6,7 @@
 /*   By: obouhlel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:04:51 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/09/18 14:32:11 by obouhlel         ###   ########.fr       */
+/*   Updated: 2023/09/19 12:37:32 by obouhlel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 
 	Queue	queue = Queue();
 
-	SocketBind	sock(queue, 8081, 5);
+	SocketBind	sock(queue, 8080, 5);
 
 	while (42)
 		queue.event_loop(handler);

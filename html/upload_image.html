@@ -40,15 +40,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Webserv</title>
+	<title>Upload</title>
 </head>
 <body>
-	<h1>Hello World !</h1>
-	<p>Testing the page for Webserv</p>
-	<br />
-	<a href="/upload_image.html"><button>Upload image</button></a>
-	<br />
-	<a href="/upload_files.html"><button>Upload files</button></a>
-	<a href="/imgs/logo.webp"><img src="/imgs/logo.webp" alt="Logo" width="200" height="200" /></a>
-</body>
+	<h1>Upload a image</h1>
+	<p>Upload a image to the server</p>
+	<center>
+		<form method="post" enctype="multipart/form-data">
+			<input type="file" name="fileToUpload" id="fileToUpload">
+			<input type="submit" value="Upload Image" name="submit">
+		</form>
+	</center>
 </html>

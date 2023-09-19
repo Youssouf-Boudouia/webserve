@@ -6,7 +6,7 @@
 /*   By: obouhlel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:26:13 by obouhlel          #+#    #+#             */
-/*   Updated: 2023/09/18 14:36:35 by obouhlel         ###   ########.fr       */
+/*   Updated: 2023/09/19 12:52:28 by obouhlel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,15 @@ Response	&Response::operator=(Response const &src)
 void	Response::setRequest(Request &request) { this->_request = &request; }
 
 // Getter
-void	Response::displayResponse(void) { std::cout << GREEN << this->_response << RESET << std::endl; }
+void	Response::displayResponse(void)
+{
+	if (this->_response != "")
+	{
+		std::cout << "_______________________________________________" << std::endl;
+		std::cout << GREEN << this->_response << RESET << std::endl;
+		std::cout << "_______________________________________________" << std::endl;
+	}
+}
 
 // Methods
 void	Response::sendResponse(void)
@@ -102,26 +110,36 @@ void	Response::sendResponse(void)
 	std::string		version = this->_request->getVersion();
 	std::string		method = this->_request->getMethod();
 	std::string		path = this->_request->getPath();
-	ssize_t			ret;
+	// ssize_t			ret = 0;
 
-	this->_response = version + " " + "200" + " " + this->_status[200] + "\r\n";
 	if (this->_methods.find(method) != this->_methods.end())
         (this->*_methods[method])();
-	
-	ret = send(this->_request->getFd(), this->_response.c_str(), this->_response.size(), 0);
-	if (ret < 0)
-		std::cerr << RED << BOLD << "Error when sending the response" << RESET << std::endl;
+	// else
+	// {
+	// 	this->_response.clear();
+	// 	if (version == "")
+	// 		version = "HTTP/1.1";
+	// 	this->_response = version + " " + "405" + " " + this->_status[405] + "\r\n";
+	// 	this->_response += "Content-Type: text/html\r\n";
+	// 	this->_response += "Content-Length: 57\r\n";
+	// 	this->_response += "\r\n";
+	// 	this->_response += "<html><body><h1>405 Method Not Allowed</h1></body></html>";
+	// 	ret = send(this->_request->getFd(), this->_response.c_str(), this->_response.size(), 0);
+	// 	if (ret == -1)
+	// 		std::cerr << RED << BOLD << "Error when sending response" << RESET << std::endl;
+	// }
 }
 
 void	Response::_methodGet(void)
 {
+	ssize_t			ret = 0;		
 	std::string		path = "./html" + this->_request->getPath();
 	std::string		extension("");
 
 	// If the path is a / it's a index.html
 	if (path == "./html/")
 		path += "index.html";
-	std::cout << "PATH: " << path << std::endl;
+
 	// Find the extension of the file
 	if (path.find_last_of(".") != std::string::npos)
 		extension = path.substr(path.find_last_of(".") + 1);
@@ -140,6 +158,10 @@ void	Response::_methodGet(void)
 	{
 		this->_response.clear();
 		this->_response = this->_request->getVersion() + " " + "404" + " " + this->_status[404] + "\r\n";
+		this->_response += "Content-Type: text/html\r\n";
+		this->_response += "Content-Length: 48\r\n";
+		this->_response += "\r\n";
+		this->_response += "<html><body><h1>404 Not Found</h1></body></html>";
 		return ;
 	}
 
@@ -154,14 +176,28 @@ void	Response::_methodGet(void)
 	this->_headers["Content-Length"] = itoa.str();
 	
 	// Set the headers
+	this->_response.clear();
+	this->_response = this->_request->getVersion() + " " + "200" + " " + this->_status[200] + "\r\n";
 	this->_response += "Content-Type: " + this->_headers["Content-Type"] + "\r\n";
 	this->_response += "Content-Length: " + this->_headers["Content-Length"] + "\r\n";
-	this->_response += "\r\n\r\n";
+	this->_response += "\r\n";
 
-	// Read the file and put it in the response
-	std::string		line;
-	while (std::getline(file, line))
-		this->_response += line;
+	int		bytes_to_read;
+	char	buffer[BUFFER_SIZE + 1];
+
+	ret = send(this->_request->getFd(), this->_response.c_str(), this->_response.size(), 0);
+	if (ret == -1)
+		std::cerr << RED << BOLD << "Error when sending response" << RESET << std::endl;
+	while (content_lenght > 0)
+	{
+		if (content_lenght < BUFFER_SIZE)
+			bytes_to_read = content_lenght;
+		else
+			bytes_to_read = BUFFER_SIZE;
+		file.read(buffer, bytes_to_read);
+		send(this->_request->getFd(), buffer, bytes_to_read, 0);
+		content_lenght -= bytes_to_read;
+	}
 	file.close();
 }
 
