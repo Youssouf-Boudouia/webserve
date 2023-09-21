@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/12 12:46:16 by yboudoui          #+#    #+#              #
-#    Updated: 2023/09/17 14:31:53 by yboudoui         ###   ########.fr        #
+#    Updated: 2023/09/21 17:28:49 by yboudoui         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ OBJS				=	$(SRCS:.cpp=.o)
 
 CXX					=	clang++
 
-CXXFLAGS			=	-Wall -Wextra -Werror -std=c++98
+CXXFLAGS			=	-Wall -Wextra -Werror -std=c++98 -g3
 
 RM					=	rm -f
 

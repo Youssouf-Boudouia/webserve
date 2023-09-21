@@ -6,7 +6,7 @@
 /*   By: yboudoui <yboudoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:04:51 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/09/17 19:54:29 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:34:57 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 	(void)argc;
 	(void)argv;
 
-	int	port = 8082;
+	int	port = 8081;
 
 	Queue	queue = Queue();
 
