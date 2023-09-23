@@ -6,7 +6,7 @@
 /*   By: yboudoui <yboudoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 16:15:58 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/09/21 18:55:34 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/09/23 14:09:20 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,36 @@ SocketConnection::SocketConnection(IQueue &queue, int fd_socketBind) : _queue(qu
 	if (_fd < 0)
 		throw std::runtime_error("Fatal error when accepting a new connection");
 	_queue.subscribe(_fd, *this);
+	_request = new Request(_fd);
 }
 
 SocketConnection::~SocketConnection()
 {
 	_queue.unsubscribe(_fd);
 	close(_fd);
+	delete _request;
 }
 
 void	SocketConnection::read(void)
 {
-	_request.recv(_fd);
-}
+	t_request	request;
 
-#include <string.h>
-const char *response = "HTTP/1.1 200 OK\nContent-Length: 74\n\n<style>h1 { color: blue; font-size: 32px; }</style><h1>Hello, world !</h1>";
+	if (_request->recv(request) == false)
+		return ;
+	std::cout << request << std::endl;
+
+	Response response();
+	response.statusCode(request.header.uri.compare("/") ? 202 : 200);
+	response.optinalHeader("lol") = "lol";
+	std::string b("<style>h1 { color: blue; font-size: 32px; }</style><h1>Hello, world !</h1>");
+	response.body(b);
+	_cache = response->str();
+}
 
 void	SocketConnection::write(void)
 {
-
-	if (_request.ok)
-	{
-		_request.ok = false;
-		send(_fd, response, strlen(response), 0);
-	}
-
+	if (_cache.empty())
+		return ;
+	int	bytes_send = send(_fd, _cache.c_str(), _cache.size(), 0);
+	_cache.erase(0, bytes_send);
 }

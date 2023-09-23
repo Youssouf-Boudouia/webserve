@@ -6,7 +6,7 @@
 /*   By: yboudoui <yboudoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:05:36 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/09/17 19:52:52 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/09/22 08:43:33 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ Queue::Queue(size_t nevents) : _nevents(nevents) {
 void	Queue::subscribe(int fd, IQueueEventListener &listener) {
 	struct kevent evSet = {
 		.ident	= fd,
-		.filter	= EVFILT_READ,
-		.flags	= EV_ADD | EV_CLEAR
+		.filter	= EVFILT_READ | EV_CLEAR,
+		.flags	= EV_ADD
 	};
 	kevent(_kq_fd, &evSet, 1, NULL, 0, NULL);
 
 	struct kevent evSet2 = {
 		.ident	= fd,
-		.filter	= EVFILT_WRITE,
-		.flags	= EV_ADD | EV_CLEAR
+		.filter	= EVFILT_WRITE | EV_CLEAR,
+		.flags	= EV_ADD
 	};
 	kevent(_kq_fd, &evSet2, 1, NULL, 0, NULL);
 

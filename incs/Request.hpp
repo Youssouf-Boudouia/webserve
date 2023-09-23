@@ -6,7 +6,7 @@
 /*   By: yboudoui <yboudoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:10:23 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/09/21 17:26:33 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/09/22 12:51:59 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,30 @@
 # include <cstring>
 # include <map>
 
+typedef struct s_request {
+	struct s_header {
+		std::string							method, uri, version;
+		std::map<std::string, std::string>	optional;
+	}	header;
+	std::string	body;
+}	t_request;
+
+std::ostream& operator<< (std::ostream& stream, const t_request& request);
+
 class Request {
 	private:
-		std::string							_request;
-		std::string							_method;
-		std::map<std::string, std::string>	_content;
+		int			_fd;
+		std::string	_cache;
+		t_request	*_request;
+
+		bool		getNextLine(std::string &line);
+		bool		parseHeader(std::string line);
+		void		parseOptionalHeader(std::string line);
 
 	public:
-		bool	ok;
-		Request(void);
+		Request(int fd);
 		~Request(void);
 
-		void	recv(int _fd);
-		bool	getNextLine(std::string &line);
-		void	print(void);
+		bool	recv(t_request &request);
 };
 #endif

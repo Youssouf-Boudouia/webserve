@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/12 12:46:16 by yboudoui          #+#    #+#              #
-#    Updated: 2023/09/21 17:28:49 by yboudoui         ###   ########.fr        #
+#    Updated: 2023/09/22 12:48:53 by yboudoui         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ SRCS				=	main.cpp\
 						srcs/Queue.cpp \
 						srcs/SocketBind.cpp \
 						srcs/SocketConnection.cpp \
-						srcs/Request.cpp
+						srcs/Request.cpp\
+						srcs/Response.cpp
 
 PATH_PACKAGE		=	./dependencies/package
 PATH_BUILD			=	./dependencies/build
