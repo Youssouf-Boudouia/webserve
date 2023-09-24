@@ -6,7 +6,7 @@
 /*   By: yboudoui <yboudoui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 16:15:58 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/09/23 14:09:20 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/09/24 12:44:51 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ void	SocketConnection::read(void)
 		return ;
 	std::cout << request << std::endl;
 
-	Response response();
+	Response response = Response();
 	response.statusCode(request.header.uri.compare("/") ? 202 : 200);
 	response.optinalHeader("lol") = "lol";
 	std::string b("<style>h1 { color: blue; font-size: 32px; }</style><h1>Hello, world !</h1>");
 	response.body(b);
-	_cache = response->str();
+	_cache = response.str();
 }
 
 void	SocketConnection::write(void)
