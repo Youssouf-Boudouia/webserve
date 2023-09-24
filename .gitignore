@@ -1,3 +1,6 @@
 *.o
 vgcore*
 *.vim
+./objs/
+./dependencies/lib/
+./dependencies/build/
